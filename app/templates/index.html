@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}List of ML Libraries{% endblock %}
+
+{% block content %}
+<h1>List of ML Libraries</h1>
+<ul>
+    {% for model in models %}
+    <li>
+    <a href="/model/{{model.name}}">{{model.description}}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
