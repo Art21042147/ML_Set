@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}List of ML Libraries{% endblock %}
+{% block title %}MACHINE LEARNING SET{% endblock %}
 
 {% block content %}
-<h1>List of ML Libraries</h1>
-<ul>
-    {% for model in models %}
-    <li>
-    <a href="/model/{{model.name}}">{{model.description}}</a>
-    </li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <header>
+        <h1>MACHINE LEARNING SET</h1>
+        <p>{{ app_description }}</p>
+        {% if user_authenticated %}
+        <button class="auth-button">{{ user_name }}</button>
+        {% else %}
+        <a href="/register" class="auth-button">Log In</a>
+        {% endif %}
+    </header>
+    <div class="models">
+        {% for model in models %}
+        <div class="model-card">
+            <img src="/logo/{{ model.name }}.svg" alt="{{ model.name }} logo" class="logo">
+            <h2>{{ model.name }}</h2>
+            <p>{{ model.description }}</p>
+            <a href="{{ model.url }}" class="btn">source</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
