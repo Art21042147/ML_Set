@@ -20,7 +20,7 @@ async def main_page(request: Request, user=Depends(get_user)):
         "index.html",
         {
             "request": request,
-            "models": models,
+            "db": models,
             "app_description": APP_DESCRIPTION,
             "user_authenticated": user["authenticated"],
             "user_name": user["name"] if user["authenticated"] else None,

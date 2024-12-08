@@ -1,13 +1,13 @@
 body {
     background-color: #2B2547;
     color: #ECECEC;
-    font-family: Arial, sans-serif;
+    font-family: Roboto;
     text-align: center;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1300px;
+    margin: 1 auto;
 }
 
 header {
@@ -16,11 +16,12 @@ header {
 
 .auth-button {
     float: right;
-    background-color: #4CAF50;
+    background-color: #3a767a;
     color: white;
     border: none;
     padding: 10px 20px;
-    text-decoration: none;
+    text-decoration: 1;
+    border-radius: 5px;
     cursor: pointer;
 }
 
@@ -31,22 +32,22 @@ header {
 
 .model-card {
     background-color: #3E3A5A;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
-    width: 30%;
-    text-align: center;
+    width: 40%;
+    text-align: left;
 }
 
 .logo {
-    width: 100px;
+    width: 120px;
     height: auto;
     margin-bottom: 10px;
 }
 
 .btn {
-    background-color: #4CAF50;
+    background-color: #3a767a;
     color: white;
     padding: 10px 20px;
-    text-decoration: none;
+    text-decoration: 1;
     border-radius: 5px;
 }
