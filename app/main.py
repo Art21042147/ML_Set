@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from contextlib import asynccontextmanager
 
-from config import config
+from core.config import config
 from db.base import Base
 from routers.pages import page_router
 from routers.users import user_router
