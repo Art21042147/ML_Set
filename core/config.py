@@ -32,7 +32,3 @@ def auth_data():
         "algorithm": config.ALGORITHM,
         "access_token_expire_minutes": config.ACCESS_TOKEN_EXPIRE_MINUTES
     }
-
-
-print(db_url())
-print(auth_data())

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
-from app.schemas import models
+from app.schemas.ml_mod import models
 from app.texts import APP_DESCRIPTION
 
 page_router = APIRouter()
