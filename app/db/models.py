@@ -1,12 +1,10 @@
-from datetime import datetime
-from sqlalchemy import ForeignKey, DateTime, func
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from app.db.base import Base
 
 
 class User(Base):
-    id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(unique=True, nullable=False)
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
@@ -19,7 +17,6 @@ class User(Base):
 
 
 class Dataset(Base):
-    id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(unique=True, nullable=False)
     file_path: Mapped[str] = mapped_column(unique=True, nullable=False)
 
@@ -32,9 +29,7 @@ class Dataset(Base):
 
 
 class Prediction(Base):
-    id: Mapped[int] = mapped_column(primary_key=True)
     result: Mapped[float]
-    created_on: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
     dataset_id: Mapped[int] = mapped_column(ForeignKey("dataset.id"), nullable=False)
