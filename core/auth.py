@@ -2,16 +2,24 @@ from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from jose import jwt
 
-from core.config import auth_data
+from core.config import config
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def verify_password(plain_password, hashed_password):
+def auth_data():
+    return {
+        "secret_key": config.SECRET_KEY,
+        "algorithm": config.ALGORITHM,
+        "access_token_expire_minutes": config.ACCESS_TOKEN_EXPIRE_MINUTES
+    }
+
+
+def verify_password(plain_password, hashed_password) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_password_hash(password):
+def get_password_hash(password) -> str:
     return pwd_context.hash(password)
 
 

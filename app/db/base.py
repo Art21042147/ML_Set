@@ -1,16 +1,15 @@
-from sqlalchemy import MetaData
-from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.orm import declared_attr
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs
+from sqlalchemy.orm import DeclarativeBase, declared_attr
 
-from core.config import config
+from core.config import db_url
+
+DB_URL = db_url()
+engine = create_async_engine(DB_URL)
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 
-class Base(DeclarativeBase):
+class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
-
-    metadata = MetaData(
-        naming_convention=config.db.naming_convention,
-    )
 
     @declared_attr.directive
     def __tablename__(cls) -> str:
