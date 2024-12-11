@@ -21,3 +21,17 @@ class Base(AsyncAttrs, DeclarativeBase):
     @declared_attr.directive
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
+
+
+def connection(method):
+    async def wrapper(*args, **kwargs):
+        async with async_session_maker() as session:
+            try:
+                return await method(*args, session=session, **kwargs)
+            except Exception as e:
+                await session.rollback()
+                raise e
+            finally:
+                await session.close()
+
+    return wrapper

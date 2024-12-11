@@ -1,6 +1,6 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, UTC
 from passlib.context import CryptContext
-from jose import jwt
+from authlib.jose import JoseError, JsonWebToken
 
 from core.config import config
 
@@ -25,14 +25,32 @@ def get_password_hash(password) -> str:
 
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(days=30)
-    to_encode.update({"exp": expire})
+
+    if "exp" not in to_encode:
+        expire = datetime.now(UTC) + timedelta(days=30)
+        to_encode.update({"exp": int(expire.timestamp())})
 
     auth_params = auth_data()
+    jwt = JsonWebToken(auth_params["algorithm"])
 
-    encoded_jwt = jwt.encode(
-        to_encode,
-        auth_params['secret_key'],
-        algorithm=auth_params['algorithm']
+    return jwt.encode(
+        header={"alg": auth_params["algorithm"]},
+        payload=to_encode,
+        key=auth_params["secret_key"]
     )
-    return encoded_jwt
+
+
+def verify_access_token(token: str) -> dict:
+    try:
+        auth_params = auth_data()
+        jwt = JsonWebToken(auth_params["algorithm"])
+        decoded = jwt.decode(token, auth_params["secret_key"])
+
+        if "exp" in decoded:
+            exp_datetime = datetime.fromtimestamp(decoded["exp"], UTC)
+            if datetime.now(UTC) > exp_datetime:
+                raise ValueError("Token has expired")
+
+        return decoded
+    except JoseError as e:
+        raise ValueError(f"Token verification failed: {str(e)}") from e
