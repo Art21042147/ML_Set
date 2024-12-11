@@ -7,21 +7,50 @@
     <header>
         <h1>MACHINE LEARNING SET</h1>
         <p>{{ app_description }}</p>
-        {% if user_authenticated %}
-        <button class="auth-button">{{ user_name }}</button>
-        {% else %}
-        <a href="/register" class="auth-button">Log In</a>
-        {% endif %}
     </header>
     <div class="models">
         {% for model in models %}
         <div class="model-card">
-            <img src="/static/logo/{{ model.name }}.svg" alt="{{ model.name }} logo" class="logo">
-            <h2>{{ model.name }}</h2>
+            <img src="/app/static/logo/{{ model.name }}.svg" alt="{{ model.name }} logo" class="logo">
+            <h2>{{ model.name|capitalize }}</h2>
             <p>{{ model.description }}</p>
             <a href="{{ model.url }}" class="btn">source</a>
         </div>
         {% endfor %}
+    </div>
+    <div class="log-info">
+    <p>{{ log_info|safe }}</p>
+    </div>
+    {% if user_authenticated %}
+    <button class="auth-button">{{ user_name }}</button>
+        {% else %}
+        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrationModal">Log In</a>
+        {% endif %}
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registrationModal">
+    Register
+    </button>
+    <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="registrationModalLabel">Registration</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="/register">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
 </div>
 {% endblock %}

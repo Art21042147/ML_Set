@@ -1,14 +1,24 @@
 from datetime import datetime
-
+from typing import Annotated
+from fastapi import Depends
 from sqlalchemy import Integer, func
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
+from sqlalchemy.ext.asyncio import (create_async_engine, async_sessionmaker,
+                                    AsyncAttrs, AsyncSession)
 
 from core.config import db_url
 
 DB_URL = db_url()
 engine = create_async_engine(DB_URL)
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+
+
+async def get_db_session():
+    async with async_session_maker() as session:
+        yield session
+
+
+SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 
 
 class Base(AsyncAttrs, DeclarativeBase):
@@ -21,17 +31,3 @@ class Base(AsyncAttrs, DeclarativeBase):
     @declared_attr.directive
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
-
-
-def connection(method):
-    async def wrapper(*args, **kwargs):
-        async with async_session_maker() as session:
-            try:
-                return await method(*args, session=session, **kwargs)
-            except Exception as e:
-                await session.rollback()
-                raise e
-            finally:
-                await session.close()
-
-    return wrapper

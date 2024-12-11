@@ -1,7 +1,7 @@
-APP_DESCRIPTION = ("In this application, you can evaluate the capabilities of machine learning db built on the"
+APP_DESCRIPTION = ("In this application, you can evaluate the capabilities of machine learning built on the"
                    " Scikit-learn, TensorFlow and PyTorch libraries, compare their performance and accuracy.")
 
-LOG_INFO = {"To be able to train and save your db, please register or sign in if you already have an account."}
+LOG_INFO = "To be able to train and save your models please register or sign in, if you already have an account."
 
 MODELS_DESCRIPTION = {
     "sklearn": "Scikit-learn is a free and open-source machine learning library for the Python programming language."

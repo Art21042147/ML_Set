@@ -1,28 +1,28 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
 from app.schemas.ml_mod import models
-from app.texts import APP_DESCRIPTION
+from app.texts import APP_DESCRIPTION, LOG_INFO
 
-page_router = APIRouter()
+
 templates = Jinja2Templates(directory="templates")
 
+router = APIRouter()
 
-def get_user(request: Request):
-    user = request.cookies.get("user_name")
-    return {"authenticated": bool(user), "name": user}
-
-
-@page_router.get("/", response_class=HTMLResponse)
-async def main_page(request: Request, user=Depends(get_user)):
+@router.get("/", response_class=HTMLResponse)
+async def main_page(request: Request):
     return templates.TemplateResponse(
         "index.html",
         {
             "request": request,
-            "db": models,
+            "models": models,
             "app_description": APP_DESCRIPTION,
-            "user_authenticated": user["authenticated"],
-            "user_name": user["name"] if user["authenticated"] else None,
+            "log_info": LOG_INFO
         }
     )
+
+
+@router.get("/register", response_class=HTMLResponse)
+async def register_page(request: Request):
+    return templates.TemplateResponse("registration.html", {"request": request})
