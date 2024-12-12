@@ -37,10 +37,14 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form method="POST" action="/register">
+            <form method="POST" action="/users/register">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username:</label>
                     <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail:</label>
+                    <input type="text" id="email" name="email" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password:</label>

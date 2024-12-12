@@ -98,3 +98,11 @@ header p {
     text-decoration: 1;
     border-radius: 5px;
 }
+
+.modal-content {
+    background-color: #190670;
+}
+
+.modal-body {
+    color: #fff;
+}

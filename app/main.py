@@ -4,7 +4,8 @@ from contextlib import asynccontextmanager
 
 from app.db.base import Base, engine
 
-from routers.pages import router
+from routers.pages import page_router
+from routers.users import user_router
 
 
 @asynccontextmanager
@@ -16,7 +17,8 @@ async def lifespan(_):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(router)
+app.include_router(page_router)
+app.include_router(user_router, prefix="/users", tags=["Users"])
 
 app.mount("/app/static", StaticFiles(directory="static"), name="static")
 

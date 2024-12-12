@@ -8,9 +8,9 @@ from app.texts import APP_DESCRIPTION, LOG_INFO
 
 templates = Jinja2Templates(directory="templates")
 
-router = APIRouter()
+page_router = APIRouter()
 
-@router.get("/", response_class=HTMLResponse)
+@page_router.get("/", response_class=HTMLResponse)
 async def main_page(request: Request):
     return templates.TemplateResponse(
         "index.html",
@@ -23,6 +23,11 @@ async def main_page(request: Request):
     )
 
 
-@router.get("/register", response_class=HTMLResponse)
+@page_router.get("/register", response_class=HTMLResponse)
 async def register_page(request: Request):
     return templates.TemplateResponse("registration.html", {"request": request})
+
+
+@page_router.get("/user_page", response_class=HTMLResponse)
+async def user_page(request: Request):
+    return templates.TemplateResponse("user_page.html", {"request": request})

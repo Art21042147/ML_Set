@@ -9,8 +9,8 @@ class User(Base):
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
 
-    datasets: Mapped[list["Dataset"]] = relationship("Dataset", back_populates="owner")
-    predictions: Mapped[list["Prediction"]] = relationship("Prediction", back_populates="user")
+    dataset: Mapped[list["Dataset"]] = relationship("Dataset", back_populates="user")
+    prediction: Mapped[list["Prediction"]] = relationship("Prediction", back_populates="user")
 
     def __repr__(self):
         return f"{self.__class__.__name__}(id={self.id}, username={self.username})"
@@ -22,7 +22,7 @@ class Dataset(Base):
 
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
 
-    owner: Mapped["User"] = relationship("User", back_populates="dataset")
+    user: Mapped["User"] = relationship("User", back_populates="dataset")
 
     def __repr__(self):
         return f"{self.__class__.__name__}(id={self.id}, title={self.title})"
@@ -35,4 +35,4 @@ class Prediction(Base):
     dataset_id: Mapped[int] = mapped_column(ForeignKey("dataset.id"), nullable=False)
 
     user: Mapped["User"] = relationship("User", back_populates="prediction")
-    dataset: Mapped["Dataset"] = relationship("Dataset", back_populates="prediction")
+    dataset: Mapped["Dataset"] = relationship("Dataset")
