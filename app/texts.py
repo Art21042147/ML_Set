@@ -4,7 +4,7 @@ APP_DESCRIPTION = ("In this application, you can evaluate the capabilities of ma
 LOG_INFO = "To be able to train and save your models please register or sign in, if you already have an account."
 
 MODELS_DESCRIPTION = {
-    "sklearn": "Scikit-learn is a free and open-source machine learning library for the Python programming language."
+    "scikit-learn": "Scikit-learn is a free and open-source machine learning library for the Python programming language."
                " It features various classification, regression and clustering algorithms including support-vector "
                "machines, random forests, gradient boosting, k-means and DBSCAN, and is designed to interoperate "
                "with the Python numerical and scientific libraries NumPy and SciPy.",
@@ -18,7 +18,9 @@ MODELS_DESCRIPTION = {
 }
 
 MODELS_URL = {
-    "sklearn": "https://scikit-learn.org/",
+    "scikit-learn": "https://scikit-learn.org/",
     "tensorflow": "https://www.tensorflow.org/",
     "pytorch": "https://pytorch.org/"
 }
+
+INSTRUCTION = "To get a forecast, select a library and dataset"

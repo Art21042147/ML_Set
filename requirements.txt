@@ -75,3 +75,4 @@ virtualenv==20.28.0
 zipp==3.21.0
 
 pytest~=8.3.4
+matplotlib~=3.10.0

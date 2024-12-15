@@ -106,3 +106,21 @@ header p {
 .modal-body {
     color: #fff;
 }
+
+.selection {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.selection label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.selection select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}

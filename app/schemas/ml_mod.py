@@ -12,9 +12,9 @@ class LearningModel(BaseModel):
 
 models: List[LearningModel] = [
     LearningModel(
-        name="sklearn",
-        description=MODELS_DESCRIPTION["sklearn"],
-        url=MODELS_URL["sklearn"]
+        name="scikit-learn",
+        description=MODELS_DESCRIPTION["scikit-learn"],
+        url=MODELS_URL["scikit-learn"]
     ),
     LearningModel(
         name="tensorflow",

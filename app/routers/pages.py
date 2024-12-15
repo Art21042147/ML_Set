@@ -1,14 +1,17 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
+from app.db.models import User
+from app.db.session import mock_get_current_user
 from app.schemas.ml_mod import models
-from app.texts import APP_DESCRIPTION, LOG_INFO
-
+from app.schemas.learning import datasets
+from app.texts import APP_DESCRIPTION, LOG_INFO, INSTRUCTION
 
 templates = Jinja2Templates(directory="templates")
 
 page_router = APIRouter()
+
 
 @page_router.get("/", response_class=HTMLResponse)
 async def main_page(request: Request):
@@ -23,11 +26,15 @@ async def main_page(request: Request):
     )
 
 
-@page_router.get("/register", response_class=HTMLResponse)
-async def register_page(request: Request):
-    return templates.TemplateResponse("registration.html", {"request": request})
-
-
 @page_router.get("/user_page", response_class=HTMLResponse)
-async def user_page(request: Request):
-    return templates.TemplateResponse("user_page.html", {"request": request})
+async def user_page(request: Request, current_user: User = Depends(mock_get_current_user)):
+    return templates.TemplateResponse(
+        "user_page.html",
+        {
+            "request": request,
+            "models": models,
+            "instruction": INSTRUCTION,
+            "user_name": current_user.username,
+            "datasets": datasets,
+        }
+    )

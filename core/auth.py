@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, UTC
 from passlib.context import CryptContext
 from authlib.jose import JoseError, JsonWebToken
+from fastapi import Request, HTTPException, status
 
 from core.config import config
 
@@ -54,3 +55,14 @@ def verify_access_token(token: str) -> dict:
         return decoded
     except JoseError as e:
         raise ValueError(f"Token verification failed: {str(e)}") from e
+
+
+def cookie_extractor(request: Request) -> str:
+    token = request.cookies.get("Authorization")
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authorization cookie not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return token
