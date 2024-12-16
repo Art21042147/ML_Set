@@ -17,6 +17,12 @@ MODELS_DESCRIPTION = {
                "deep neural networks built on a tape-based automatic differentiation system."
 }
 
+DATASET_DESCRIPTION = {
+    "pollution": "Air Quality and Pollution Assessment."
+                 " This dataset focuses on air quality assessment across various regions.",
+    "energy": "Renewable Energy. Analysis of renewable energy in world (1960-2023)"
+}
+
 MODELS_URL = {
     "scikit-learn": "https://scikit-learn.org/",
     "tensorflow": "https://www.tensorflow.org/",
