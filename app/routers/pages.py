@@ -1,12 +1,10 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
-from app.db.models import User
 from app.schemas.ml_mod import models
 from app.schemas.learning import datasets
 from app.texts import APP_DESCRIPTION, LOG_INFO, INSTRUCTION
-from core.auth_depends import get_current_user
 
 templates = Jinja2Templates(directory="templates")
 
@@ -27,17 +25,14 @@ async def main_page(request: Request):
 
 
 @page_router.get("/user_page", response_class=HTMLResponse)
-async def user_page(
-        request: Request,
-        current_user: User = Depends(get_current_user),
-):
+async def user_page(request: Request, user_name: str = None):
     return templates.TemplateResponse(
         "user_page.html",
         {
             "request": request,
             "models": models,
             "instruction": INSTRUCTION,
-            "user_name": current_user.username,
+            "user_name": user_name,
             "datasets": datasets,
         }
     )

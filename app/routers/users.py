@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.responses import RedirectResponse
 
 from app.db.session import get_user_by_username, create_user
 from app.db.base import SessionDep
-from core.auth import create_access_token, verify_password, token_expires
+from core.auth import verify_password
 from app.schemas.users import UserCreate
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token")
@@ -17,7 +18,9 @@ async def register(session: SessionDep, user_data: UserCreate = Depends(UserCrea
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
     user = await create_user(session, user_data.username, user_data.email, user_data.password)
-    return {"message": "User created successfully", "user_id": user.id}
+
+    response = RedirectResponse(url=f"/user_page?user_name={user.username}", status_code=status.HTTP_303_SEE_OTHER)
+    return response
 
 
 @user_router.post("/token")
@@ -25,5 +28,6 @@ async def login(session: SessionDep, form_data: OAuth2PasswordRequestForm = Depe
     user = await get_user_by_username(session, form_data.username)
     if not user or not verify_password(form_data.password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
-    token = create_access_token({"sub": user.username}, expires_delta=token_expires)
-    return {"access_token": token, "token_type": "bearer"}
+
+    response = RedirectResponse(url=f"/user_page?user_name={user.username}", status_code=status.HTTP_303_SEE_OTHER)
+    return response
