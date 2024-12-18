@@ -9,24 +9,35 @@
         <h2>Welcome {{ user_name }}!</h2>
         <p>{{ instruction }}</p>
     </header>
-    <form action="/start-learning" method="post">
-        <div class="selection">
-            <label for="library">Choose a library:</label>
-            <select name="library" id="library" required>
-                {% for model in models %}
-                <option value="{{ model.name }}">{{ model.name|capitalize }}</option>
-                {% endfor %}
-            </select>
+    <div class="content-layout">
+        <div class="datasets">
+            {% for dataset in datasets %}
+            <div class="dataset-card">
+                <h3>{{ dataset.title }} Dataset</h3>
+                <p>{{ dataset.description }}</p>
+                <a href="{{ dataset.url }}" class="btn">source</a>
+            </div>
+            {% endfor %}
         </div>
-        <div class="selection">
-            <label for="dataset">Choose a dataset:</label>
-            <select name="dataset" id="dataset" required>
-                {% for dataset in datasets %}
-                <option value="{{ dataset.title }}">{{ dataset.title }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <button type="submit" class="btn">Start Learning</button>
-    </form>
+        <form action="/start-learning" method="post">
+            <div class="selection">
+                <label for="library">Choose a library:</label>
+                <select name="library" id="library" required>
+                    {% for model in models %}
+                    <option value="{{ model.name }}">{{ model.name|capitalize }} Library</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="selection">
+                <label for="dataset">Choose a dataset:</label>
+                <select name="dataset" id="dataset" required>
+                    {% for dataset in datasets %}
+                    <option value="{{ dataset.title }}">{{ dataset.title }} Dataset</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn">Start Learning</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

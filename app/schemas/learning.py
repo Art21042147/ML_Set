@@ -1,17 +1,22 @@
 from pydantic import BaseModel
 from typing import List
 from fastapi import Form
+from app.texts import DATASET_DESCRIPTION, DATASET_URL
 
 
 class Dataset(BaseModel):
     title: str
-    file_path: str
+    description: str
+    url: str
 
 
 datasets: List[Dataset] = [
-    Dataset(title="Dataset 1", file_path="dataset1.csv"),
-    Dataset(title="Dataset 2", file_path="dataset2.csv"),
-    Dataset(title="Dataset 3", file_path="dataset3.csv"),
+    Dataset(title="Air Pollution",
+            description=DATASET_DESCRIPTION["Air Pollution"],
+            url=DATASET_URL["Air Pollution"]),
+    Dataset(title="Renewable Energy",
+            description=DATASET_DESCRIPTION["Renewable Energy"],
+            url=DATASET_URL["Renewable Energy"]),
 ]
 
 

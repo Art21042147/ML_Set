@@ -124,3 +124,26 @@ header p {
     border: 1px solid #ccc;
     font-size: 1rem;
 }
+
+.content-layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.datasets {
+    flex: 3;
+}
+
+form {
+    flex: 1; 
+    max-width: 300px;
+}
+
+.dataset-card {
+    margin-bottom: 10px; /* Увеличьте значение для большего расстояния */
+    padding: 15px; /* Если нужно дополнительное внутреннее пространство */
+    border: 1px solid #ccc; /* Опционально: добавить рамку для визуального разделения */
+    border-radius: 10px; /* Опционально: скругленные углы */
+    background-color: #3E3A5A; /* Если нужно задать фон */
+}
