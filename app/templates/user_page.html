@@ -21,7 +21,7 @@
         </div>
         <form action="/start-learning" method="post">
             <div class="selection">
-                <label for="library">Choose a library:</label>
+                <label for="library">Choose a Library:</label>
                 <select name="library" id="library" required>
                     {% for model in models %}
                     <option value="{{ model.name }}">{{ model.name|capitalize }} Library</option>
@@ -29,10 +29,18 @@
                 </select>
             </div>
             <div class="selection">
-                <label for="dataset">Choose a dataset:</label>
+                <label for="dataset">Choose a Dataset:</label>
                 <select name="dataset" id="dataset" required>
                     {% for dataset in datasets %}
                     <option value="{{ dataset.title }}">{{ dataset.title }} Dataset</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="selection">
+                <label for="task">Choose a Task:</label>
+                <select name="task" id="task" required>
+                    {% for task in tasks %}
+                    <option value="{{ task }}">{{ task }}</option>
                     {% endfor %}
                 </select>
             </div>

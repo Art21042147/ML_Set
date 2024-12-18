@@ -141,9 +141,9 @@ form {
 }
 
 .dataset-card {
-    margin-bottom: 10px; /* Увеличьте значение для большего расстояния */
-    padding: 15px; /* Если нужно дополнительное внутреннее пространство */
-    border: 1px solid #ccc; /* Опционально: добавить рамку для визуального разделения */
-    border-radius: 10px; /* Опционально: скругленные углы */
-    background-color: #3E3A5A; /* Если нужно задать фон */
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #3E3A5A;
 }

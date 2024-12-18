@@ -37,4 +37,4 @@ DATASET_URL = {
         "https://www.kaggle.com/datasets/imtkaggleteam/renewable-energy-1960-2023",
 }
 
-INSTRUCTION = "To get a forecast, select a library and dataset"
+INSTRUCTION = "To get a forecast, select a library, dataset and task"

@@ -34,5 +34,6 @@ async def user_page(request: Request, user_name: str = None):
             "instruction": INSTRUCTION,
             "user_name": user_name,
             "datasets": datasets,
+            "tasks": ["Classification", "Regression"]
         }
     )
