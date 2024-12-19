@@ -4,7 +4,7 @@ import jwt
 
 from app.db.base import SessionDep
 from app.db.session import get_user_by_username
-from core.config import config
+from app.core.config import config
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token")
 

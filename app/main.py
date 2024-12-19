@@ -6,6 +6,7 @@ from app.db.base import Base, engine
 
 from routers.pages import page_router
 from routers.users import user_router
+from routers.ml_start import ml_router
 
 
 @asynccontextmanager
@@ -19,6 +20,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(page_router)
 app.include_router(user_router, prefix="/users", tags=["Users"])
+app.include_router(ml_router, tags=["Start Learning"])
 
 app.mount("/app/static", StaticFiles(directory="static"), name="static")
 

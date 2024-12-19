@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import pandas as pd
+import argparse
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.metrics import accuracy_score, classification_report
@@ -83,24 +84,22 @@ def train_pytorch_classification(dataset_path, target_column, save_path):
 
     return accuracy, report
 
-# Example usage
-datasets = {
-    "pollution": {
-        "path": "ml/datasets/processed_pollution_dataset.csv",
-        "target_column": "Air Quality"
-    },
-    "energy": {
-        "path": "ml/datasets/processed_renewable_energy.csv",
-        "target_column": "Energy_Level"
-    }
-}
+# Парсинг аргументов командной строки
+parser = argparse.ArgumentParser(description="Run classification model")
+parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
+parser.add_argument("--target-column", required=True, help="Target column for classification")
+parser.add_argument("--save-path", required=True, help="Path to save results")
+args = parser.parse_args()
 
-for name, details in datasets.items():
-    print(f"Training PyTorch classification model for {name}")
-    accuracy, report = train_pytorch_classification(
-        dataset_path=details["path"],
-        target_column=details["target_column"],
-        save_path=f"ml/predictions/{name}_pytorch_classification"
-    )
-    print(f"{name} - Accuracy: {accuracy}")
-    print(f"Classification Report:\n{report}")
+# Запуск обучения
+accuracy, report = train_pytorch_classification(
+    dataset_path=args.dataset_path,
+    target_column=args.target_column,
+    save_path=args.save_path
+)
+
+# Вывод результатов
+print(f"Dataset Path: {args.dataset_path}")
+print(f"Accuracy: {accuracy}")
+print(f"Classification Report:\n{report}")
+print(f"Results saved in: {args.save_path}")

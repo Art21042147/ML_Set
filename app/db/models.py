@@ -36,3 +36,11 @@ class Prediction(Base):
 
     user: Mapped["User"] = relationship("User", back_populates="prediction")
     dataset: Mapped["Dataset"] = relationship("Dataset")
+
+    @classmethod
+    async def create_prediction(cls, session, user_id, dataset_id, result):
+        prediction = cls(user_id=user_id, dataset_id=dataset_id, result=result)
+        session.add(prediction)
+        await session.commit()
+        await session.refresh(prediction)
+        return prediction

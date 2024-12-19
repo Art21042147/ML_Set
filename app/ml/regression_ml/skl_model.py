@@ -1,3 +1,4 @@
+import argparse
 import os
 import joblib
 import pandas as pd
@@ -9,16 +10,19 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 
 
-def train_regression_model(dataset, target_column, save_path):
+def train_regression_model(dataset_path, target_column, save_path):
     """
     Train a regression model using Random Forest and save results.
 
-    :param dataset: pandas DataFrame containing the dataset.
+    :param dataset_path: str, path to the dataset CSV file.
     :param target_column: str, the name of the target column for regression.
-    :param save_path: str, path to save the model, metrics, and plots.
+    :param save_path: str, directory to save the model, metrics, and plots.
     """
     # Ensure save directory exists
     os.makedirs(save_path, exist_ok=True)
+
+    # Load dataset
+    dataset = pd.read_csv(dataset_path)
 
     # Split data into features and target
     X = dataset.drop(columns=[target_column])
@@ -69,28 +73,22 @@ def train_regression_model(dataset, target_column, save_path):
     return mse, r2
 
 
-datasets = {
-    "pollution": {
-        "path": "ml/datasets/processed_pollution_dataset.csv",
-        "target_column": "Air Quality"
-    },
-    "energy": {
-        "path": "ml/datasets/processed_renewable_energy.csv",
-        "target_column": "Energy_Level"
-    }
-}
+# Command-line argument parsing
+parser = argparse.ArgumentParser(description="Run regression model")
+parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
+parser.add_argument("--target-column", required=True, help="Target column for regression")
+parser.add_argument("--save-path", required=True, help="Path to save results")
+args = parser.parse_args()
 
-for name, details in datasets.items():
-    print(f"Training regression model for {name}")
+# Pass arguments to the function
+mse, r2 = train_regression_model(
+    dataset_path=args.dataset_path,
+    target_column=args.target_column,
+    save_path=args.save_path
+)
 
-    # Load the dataset into a DataFrame
-    dataset = pd.read_csv(details["path"])
-
-    # Call the function with the DataFrame
-    mse, r2 = train_regression_model(
-        dataset=dataset,
-        target_column=details["target_column"],
-        save_path=f"ml/predictions/{name}_regression"
-    )
-
-    print(f"{name} - MSE: {mse}, R²: {r2}")
+# Output results
+print(f"Dataset Path: {args.dataset_path}")
+print(f"MSE: {mse}")
+print(f"R²: {r2}")
+print(f"Results saved in: {args.save_path}")

@@ -1,8 +1,10 @@
+import argparse
 import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
+
 
 def train_tensorflow_regression(dataset_path, target_column, save_path):
     # Load dataset
@@ -41,23 +43,20 @@ def train_tensorflow_regression(dataset_path, target_column, save_path):
 
     return mse, r2
 
-# Example usage
-datasets = {
-    "pollution": {
-        "path": "ml/datasets/processed_pollution_dataset.csv",
-        "target_column": "Air Quality"
-    },
-    "energy": {
-        "path": "ml/datasets/processed_renewable_energy.csv",
-        "target_column": "Energy_Level"
-    }
-}
 
-for name, details in datasets.items():
-    print(f"Training TensorFlow regression model for {name}")
-    mse, r2 = train_tensorflow_regression(
-        dataset_path=details["path"],
-        target_column=details["target_column"],
-        save_path=f"ml/predictions/{name}_tensorflow_regression"
-    )
-    print(f"{name} - MSE: {mse}, R²: {r2}")
+parser = argparse.ArgumentParser(description="Run regression model")
+parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
+parser.add_argument("--target-column", required=True, help="Target column for regression")
+parser.add_argument("--save-path", required=True, help="Path to save results")
+args = parser.parse_args()
+
+mse, r2 = train_tensorflow_regression(
+    dataset_path=args.dataset_path,
+    target_column=args.target_column,
+    save_path=args.save_path
+)
+
+print(f"Dataset Path: {args.dataset_path}")
+print(f"MSE: {mse}")
+print(f"R²: {r2}")
+print(f"Results saved in: {args.save_path}")

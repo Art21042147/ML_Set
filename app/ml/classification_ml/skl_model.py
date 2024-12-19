@@ -1,5 +1,6 @@
 import os
 import joblib
+import argparse
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -68,40 +69,25 @@ def train_classification_model(dataset, target_column, save_path):
     return accuracy, report
 
 
-# Пути к обработанным датасетам
-datasets = {
-    "pollution": "ml/datasets/processed_pollution_dataset.csv",
-    "energy": "ml/datasets/processed_renewable_energy.csv"
-}
+# Парсинг аргументов командной строки
+parser = argparse.ArgumentParser(description="Run classification model")
+parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
+parser.add_argument("--target-column", required=True, help="Target column for classification")
+parser.add_argument("--save-path", required=True, help="Path to save results")
+args = parser.parse_args()
 
-# Параметры для каждого датасета
-test_cases = {
-    "pollution": {
-        "target_column": "Air Quality",
-        "save_path": "ml/predictions/pollution_model"
-    },
-    "energy": {
-        "target_column": "Energy_Level",
-        "save_path": "ml/predictions/energy_model"
-    }
-}
+# Загрузка датасета
+dataset = pd.read_csv(args.dataset_path)
 
-# Тестирование функции классификации на каждом датасете
-for dataset_name, params in test_cases.items():
-    print(f"Testing dataset: {dataset_name}")
-    # Загрузка датасета
-    dataset_path = datasets[dataset_name]
-    dataset = pd.read_csv(dataset_path)
+# Запуск обучения
+accuracy, report = train_classification_model(
+    dataset=dataset,
+    target_column=args.target_column,
+    save_path=args.save_path
+)
 
-    # Запуск обучения
-    accuracy, report = train_classification_model(
-        dataset=dataset,
-        target_column=params["target_column"],
-        save_path=params["save_path"]
-    )
-
-    # Вывод результатов
-    print(f"Dataset: {dataset_name}")
-    print(f"Accuracy: {accuracy}")
-    print(f"Classification Report:\n{report}")
-    print(f"Results saved in: {params['save_path']}")
+# Вывод результатов
+print(f"Dataset Path: {args.dataset_path}")
+print(f"Accuracy: {accuracy}")
+print(f"Classification Report:\n{report}")
+print(f"Results saved in: {args.save_path}")

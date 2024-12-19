@@ -3,7 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 
 from app.schemas.ml_mod import models
-from app.schemas.learning import datasets
+from app.schemas.ml_set import datasets
 from app.texts import APP_DESCRIPTION, LOG_INFO, INSTRUCTION
 
 templates = Jinja2Templates(directory="templates")

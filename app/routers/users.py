@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 
 from app.db.session import get_user_by_username, create_user
 from app.db.base import SessionDep
-from core.auth import verify_password
+from app.core.auth import verify_password
 from app.schemas.users import UserCreate
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token")

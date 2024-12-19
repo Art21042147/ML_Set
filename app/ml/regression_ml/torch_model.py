@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -6,6 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
+import argparse
+
 
 class EnhancedRegressionModel(nn.Module):
     def __init__(self, input_dim):
@@ -26,6 +29,7 @@ class EnhancedRegressionModel(nn.Module):
         x = torch.relu(self.fc3(x))
         x = self.fc4(x)
         return x
+
 
 def train_pytorch_regression_with_early_stopping(dataset_path, target_column, save_path):
     # Load dataset
@@ -91,7 +95,7 @@ def train_pytorch_regression_with_early_stopping(dataset_path, target_column, sa
         if val_loss < best_loss:
             best_loss = val_loss
             patience_counter = 0
-            torch.save(model.state_dict(), f"{save_path}_model.pth")
+            torch.save(model.state_dict(), os.path.join(save_path, "model.pth"))
         else:
             patience_counter += 1
 
@@ -107,28 +111,29 @@ def train_pytorch_regression_with_early_stopping(dataset_path, target_column, sa
         r2 = r2_score(y_test.numpy(), y_pred)
 
     # Save metrics
-    with open(f"{save_path}_metrics.txt", "w") as f:
+    with open(os.path.join(save_path, "metrics.txt"), "w") as f:
         f.write(f"MSE: {mse}\nR²: {r2}\n")
 
     return mse, r2
 
-# Example usage
-datasets = {
-    "pollution": {
-        "path": "ml/datasets/processed_pollution_dataset.csv",
-        "target_column": "Air Quality"
-    },
-    "energy": {
-        "path": "ml/datasets/processed_renewable_energy.csv",
-        "target_column": "Energy_Level"
-    }
-}
 
-for name, details in datasets.items():
-    print(f"Training Enhanced PyTorch regression model with Early Stopping for {name}")
-    mse, r2 = train_pytorch_regression_with_early_stopping(
-        dataset_path=details["path"],
-        target_column=details["target_column"],
-        save_path=f"ml/predictions/{name}_early_stopping_pytorch_regression"
-    )
-    print(f"{name} - MSE: {mse}, R²: {r2}")
+# Command-line arguments
+parser = argparse.ArgumentParser(description="Train PyTorch Regression Model")
+parser.add_argument("--dataset-path", required=True, help="Path to dataset CSV")
+parser.add_argument("--target-column", required=True, help="Target column name")
+parser.add_argument("--save-path", required=True, help="Directory to save outputs")
+args = parser.parse_args()
+
+os.makedirs(args.save_path, exist_ok=True)
+
+# Run the model
+mse, r2 = train_pytorch_regression_with_early_stopping(
+    dataset_path=args.dataset_path,
+    target_column=args.target_column,
+    save_path=args.save_path
+)
+
+print(f"Dataset: {args.dataset_path}")
+print(f"MSE: {mse}")
+print(f"R²: {r2}")
+print(f"Results saved in: {args.save_path}")
