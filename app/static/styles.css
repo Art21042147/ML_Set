@@ -100,7 +100,13 @@ header p {
 }
 
 .modal-content {
-    background-color: #3d24ab;
+    background-color: #3115ae;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    padding: 20px;
+    max-width: 400px;
 }
 
 .modal-body {

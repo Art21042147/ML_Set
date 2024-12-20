@@ -25,7 +25,7 @@ async def main_page(request: Request):
 
 
 @page_router.get("/user_page", response_class=HTMLResponse)
-async def user_page(request: Request, user_name: str = None):
+async def user_page(request: Request, user_name: str):
     return templates.TemplateResponse(
         "user_page.html",
         {

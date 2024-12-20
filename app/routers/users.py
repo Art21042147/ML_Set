@@ -17,10 +17,9 @@ async def register(session: SessionDep, user_data: UserCreate = Depends(UserCrea
     existing_user = await get_user_by_username(session, user_data.username)
     if existing_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
-    user = await create_user(session, user_data.username, user_data.email, user_data.password)
 
-    response = RedirectResponse(url=f"/user_page?user_name={user.username}", status_code=status.HTTP_303_SEE_OTHER)
-    return response
+    user = await create_user(session, user_data.username, user_data.email, user_data.password)
+    return RedirectResponse(url=f"/user_page?user_name={user.username}", status_code=status.HTTP_303_SEE_OTHER)
 
 
 @user_router.post("/token")
@@ -29,5 +28,5 @@ async def login(session: SessionDep, form_data: OAuth2PasswordRequestForm = Depe
     if not user or not verify_password(form_data.password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
 
-    response = RedirectResponse(url=f"/user_page?user_name={user.username}", status_code=status.HTTP_303_SEE_OTHER)
-    return response
+    # После успешного входа перенаправляем на страницу пользователя
+    return RedirectResponse(url=f"/user_page?user_name={form_data.username}", status_code=status.HTTP_303_SEE_OTHER)
