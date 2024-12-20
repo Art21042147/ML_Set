@@ -1,19 +1,13 @@
-from fastapi import HTTPException, status
+from fastapi import Depends, HTTPException, status, Cookie
 import jwt
 
+from app.core.config import config
 from app.db.base import SessionDep
 from app.db.session import get_user_by_username
-from app.core.config import config
 
-
-async def get_current_user(session: SessionDep, token: str):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+def decode_token(token: str):
     try:
-        payload = jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
+        return jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
     except jwt.ExpiredSignatureError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -21,14 +15,43 @@ async def get_current_user(session: SessionDep, token: str):
             headers={"WWW-Authenticate": "Bearer"},
         )
     except jwt.PyJWTError:
-        raise credentials_exception
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
-    username: str = payload.get("sub")
-    if not username:
-        raise credentials_exception
 
-    user = await get_user_by_username(session, username)
-    if not user:
-        raise credentials_exception
-
-    return user
+async def get_current_user(
+    session: SessionDep,
+    token: str = Cookie(None, alias="Authorization")
+):
+    if not token or not token.startswith("Bearer "):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token format",
+        )
+    try:
+        # Убираем префикс "Bearer "
+        token = token.split("Bearer ")[1]
+        # Расшифровываем токен
+        payload = decode_token(token)
+        username: str = payload.get("sub")
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token",
+            )
+        # Проверяем пользователя в базе данных
+        user = await get_user_by_username(session, username)
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+            )
+        return user
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+        )
