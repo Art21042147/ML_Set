@@ -133,6 +133,8 @@ mse, r2 = train_pytorch_regression_with_early_stopping(
     save_path=args.save_path
 )
 
+print("Library: Pytorch")
+print("Task: Regression")
 print(f"Dataset: {args.dataset_path}")
 print(f"MSE: {mse}")
 print(f"R²: {r2}")

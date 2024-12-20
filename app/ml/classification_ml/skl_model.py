@@ -87,6 +87,7 @@ accuracy, report = train_classification_model(
 )
 
 # Вывод результатов
+print("Library: Scikit-learn")
 print(f"Dataset Path: {args.dataset_path}")
 print(f"Accuracy: {accuracy}")
 print(f"Classification Report:\n{report}")

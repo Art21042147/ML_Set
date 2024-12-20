@@ -88,6 +88,8 @@ mse, r2 = train_regression_model(
 )
 
 # Output results
+print("Library: Scikit-learn")
+print("Task: Regression")
 print(f"Dataset Path: {args.dataset_path}")
 print(f"MSE: {mse}")
 print(f"R²: {r2}")

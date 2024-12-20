@@ -77,6 +77,7 @@ accuracy, report = train_tensorflow_classification(
 )
 
 # Вывод результатов
+print("Library: Tensorflow")
 print(f"Dataset Path: {args.dataset_path}")
 print(f"Accuracy: {accuracy}")
 print(f"Classification Report:\n{report}")

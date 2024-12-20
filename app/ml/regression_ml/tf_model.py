@@ -56,6 +56,8 @@ mse, r2 = train_tensorflow_regression(
     save_path=args.save_path
 )
 
+print("Library: Tensorflow")
+print("Task: Regression")
 print(f"Dataset Path: {args.dataset_path}")
 print(f"MSE: {mse}")
 print(f"R²: {r2}")

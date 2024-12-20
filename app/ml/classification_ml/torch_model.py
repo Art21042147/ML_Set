@@ -7,14 +7,15 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.metrics import accuracy_score, classification_report
 
+
 class ClassificationModel(nn.Module):
     def __init__(self, input_dim, num_classes):
         super(ClassificationModel, self).__init__()
         self.fc1 = nn.Linear(input_dim, 128)  # Increased neurons
-        self.fc2 = nn.Linear(128, 64)         # Added complexity
+        self.fc2 = nn.Linear(128, 64)  # Added complexity
         self.fc3 = nn.Linear(64, 32)
         self.fc4 = nn.Linear(32, num_classes)
-        self.dropout = nn.Dropout(0.3)       # Dropout for regularization
+        self.dropout = nn.Dropout(0.3)  # Dropout for regularization
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
@@ -24,6 +25,7 @@ class ClassificationModel(nn.Module):
         x = torch.relu(self.fc3(x))
         x = self.fc4(x)
         return x
+
 
 def train_pytorch_classification(dataset_path, target_column, save_path):
     # Load dataset
@@ -84,6 +86,7 @@ def train_pytorch_classification(dataset_path, target_column, save_path):
 
     return accuracy, report
 
+
 # Парсинг аргументов командной строки
 parser = argparse.ArgumentParser(description="Run classification model")
 parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
@@ -99,6 +102,7 @@ accuracy, report = train_pytorch_classification(
 )
 
 # Вывод результатов
+print("Library: Pytorch")
 print(f"Dataset Path: {args.dataset_path}")
 print(f"Accuracy: {accuracy}")
 print(f"Classification Report:\n{report}")
