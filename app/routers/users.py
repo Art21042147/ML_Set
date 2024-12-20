@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import RedirectResponse
 
 from app.db.session import get_user_by_username, create_user
 from app.db.base import SessionDep
 from app.core.auth import verify_password
 from app.schemas.users import UserCreate
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token")
 
 user_router = APIRouter()
 

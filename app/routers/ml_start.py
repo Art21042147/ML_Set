@@ -57,7 +57,7 @@ async def start_learning(request: Request, ml_data: LearningSet = Depends(Learni
             "request": request,
             "models": models,
             "instruction": INSTRUCTION,
-            "user_name": "User",
+            "user_name": "to Machine Learning",
             "datasets": datasets,
             "tasks": ["Classification", "Regression"],
             "results": output  # Передача результатов обучения

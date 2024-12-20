@@ -1,15 +1,12 @@
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import HTTPException, status
 import jwt
 
 from app.db.base import SessionDep
 from app.db.session import get_user_by_username
 from app.core.config import config
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token")
 
-
-async def get_current_user(session: SessionDep, token: str = Depends(oauth2_scheme)):
+async def get_current_user(session: SessionDep, token: str):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
