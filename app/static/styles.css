@@ -147,3 +147,9 @@ form {
     border-radius: 10px;
     background-color: #3E3A5A;
 }
+
+.results {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}

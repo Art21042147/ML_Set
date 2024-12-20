@@ -1,13 +1,19 @@
 from fastapi import HTTPException, APIRouter, Depends
-from fastapi.responses import JSONResponse
+from fastapi.requests import Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 import subprocess
 
+from app.schemas.ml_mod import models
 from app.schemas.ml_set import datasets, LearningSet
+from app.texts import INSTRUCTION
+
+templates = Jinja2Templates(directory="templates")
 
 ml_router = APIRouter()
 
-@ml_router.post("/start-learning")
-async def start_learning(ml_data: LearningSet = Depends(LearningSet.as_form)):
+@ml_router.post("/start-learning", response_class=HTMLResponse)
+async def start_learning(request: Request, ml_data: LearningSet = Depends(LearningSet.as_form)):
     # Найти соответствующий объект Dataset
     dataset_obj = next((ds for ds in datasets if ds.title.lower() == ml_data.dataset.lower()), None)
     if not dataset_obj:
@@ -41,6 +47,19 @@ async def start_learning(ml_data: LearningSet = Depends(LearningSet.as_form)):
             text=True,
             check=True
         )
-        return JSONResponse(content={"message": "Learning completed", "output": result.stdout})
+        output = result.stdout
     except subprocess.CalledProcessError as e:
-        raise HTTPException(status_code=500, detail=f"Error during training: {e.stderr}")
+        output = f"Error during training: {e.stderr}"
+
+    return templates.TemplateResponse(
+        "user_page.html",
+        {
+            "request": request,
+            "models": models,
+            "instruction": INSTRUCTION,
+            "user_name": "User",
+            "datasets": datasets,
+            "tasks": ["Classification", "Regression"],
+            "results": output  # Передача результатов обучения
+        }
+    )

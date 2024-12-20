@@ -18,6 +18,12 @@
                 <a href="{{ dataset.url }}" class="btn">source</a>
             </div>
             {% endfor %}
+            {% if results %}
+            <div class="dataset-card">
+                <h3>Learning Results</h3>
+                <pre>{{ results }}</pre>
+            </div>
+            {% endif %}
         </div>
         <form action="/start-learning" method="post">
             <div class="selection">
