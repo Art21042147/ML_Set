@@ -5,7 +5,14 @@ from app.core.config import config
 from app.db.base import SessionDep
 from app.db.session import get_user_by_username
 
+
 def decode_token(token: str):
+    """
+    Decodes the JWT and returns the decoded data if the token is valid.
+    If the token is invalid, the function raises an exception.
+
+    :param token: str, contains the JSON Web Token to be decoded.
+    """
     try:
         return jwt.decode(token, config.SECRET_KEY, algorithms=[config.ALGORITHM])
     except jwt.ExpiredSignatureError:
@@ -23,18 +30,28 @@ def decode_token(token: str):
 
 
 async def get_current_user(
-    session: SessionDep,
-    token: str = Cookie(None, alias="Authorization")
+        session: SessionDep,
+        token: str = Cookie(None, alias="Authorization")
 ):
+    """
+    Checks that token is not empty and starts with `Bearer `.
+    If it is not, the function throws an exception.
+    If token passes the check, the function removes the `Bearer ` prefix from token
+    and decodes it using the `decode_token function`.
+    The decoding result is stored in the `payload` variable.
+
+    :param session: SQLAlchemy AsyncSession object, used to interact with the database.
+    :param token: str, contains the JSON Web Token to be decoded.
+    """
     if not token or not token.startswith("Bearer "):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token format",
         )
     try:
-        # Убираем префикс "Bearer "
+        # Remove the prefix "Bearer "
         token = token.split("Bearer ")[1]
-        # Расшифровываем токен
+        # Decrypting the token
         payload = decode_token(token)
         username: str = payload.get("sub")
         if username is None:
@@ -42,7 +59,7 @@ async def get_current_user(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid token",
             )
-        # Проверяем пользователя в базе данных
+        # Checking the user in the database
         user = await get_user_by_username(session, username)
         if user is None:
             raise HTTPException(

@@ -12,19 +12,31 @@ templates = Jinja2Templates(directory="templates")
 
 ml_router = APIRouter()
 
+
 @ml_router.post("/start-learning", response_class=HTMLResponse)
 async def start_learning(request: Request, ml_data: LearningSet = Depends(LearningSet.as_form)):
-    # Найти соответствующий объект Dataset
+    """
+    This function searches for the corresponding `Dataset` object in the `datasets` list by the name,
+    specified in `ml_data.dataset`, extracts the necessary parameters from the found `Dataset` object
+    and defines a script to run depending on the selected machine learning library (ml_data.library).
+    The script is launched with the parameters passed through the command line.
+    As a result of the function, the `user_page.html` template is returned with the training results
+    passed in the `results` variable.
+
+    :param request: SQLAlchemy AsyncSession object, used to interact with the database.
+    :param ml_data: an object containing the user data that was passed in the request.
+    """
+    # Find the corresponding Dataset object
     dataset_obj = next((ds for ds in datasets if ds.title.lower() == ml_data.dataset.lower()), None)
     if not dataset_obj:
         raise HTTPException(status_code=400, detail="Invalid dataset selected.")
 
-    # Извлечь необходимые параметры
+    # Extract the required parameters
     dataset_path = dataset_obj.path
     target_column = dataset_obj.target_column
     save_path = f"ml/predictions/{ml_data.dataset.lower().replace(' ', '_')}_model"
 
-    # Определить скрипт для запуска
+    # Define a script to run
     if ml_data.library.lower() == "scikit-learn":
         script = f"ml/{ml_data.task.lower()}_ml/skl_model.py"
     elif ml_data.library.lower() == "tensorflow":
@@ -34,7 +46,7 @@ async def start_learning(request: Request, ml_data: LearningSet = Depends(Learni
     else:
         raise HTTPException(status_code=400, detail="Invalid library selected.")
 
-    # Запуск скрипта с передачей параметров
+    # Running a script with passing parameters
     try:
         result = subprocess.run(
             [
@@ -60,6 +72,6 @@ async def start_learning(request: Request, ml_data: LearningSet = Depends(Learni
             "user_name": "to Machine Learning",
             "datasets": datasets,
             "tasks": ["Classification", "Regression"],
-            "results": output  # Передача результатов обучения
+            "results": output  # Transfer of learning outcomes
         }
     )

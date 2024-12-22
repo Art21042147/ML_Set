@@ -34,7 +34,7 @@ async def user_page(request: Request, current_user: User = Depends(get_current_u
             "request": request,
             "models": models,
             "instruction": INSTRUCTION,
-            "user_name": current_user.username,  # Получаем имя из объекта пользователя
+            "user_name": current_user.username,
             "datasets": datasets,
             "tasks": ["Classification", "Regression"]
         }
