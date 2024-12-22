@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from fastapi import Form
 
+
 class UserCreate(BaseModel):
     username: str
     email: EmailStr
