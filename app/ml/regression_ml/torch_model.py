@@ -32,6 +32,13 @@ class EnhancedRegressionModel(nn.Module):
 
 
 def train_pytorch_regression_with_early_stopping(dataset_path, target_column, save_path):
+    """
+    Train a regression model using torch and save results.
+
+    :param dataset_path: str, path to the dataset CSV file.
+    :param target_column: str, the name of the target column for regression.
+    :param save_path: str, directory to save the model, metrics, and plots.
+    """
     # Load dataset
     dataset = pd.read_csv(dataset_path)
     X = dataset.drop(columns=[target_column]).values
@@ -126,13 +133,14 @@ args = parser.parse_args()
 
 os.makedirs(args.save_path, exist_ok=True)
 
-# Run the model
+# Start training
 mse, r2 = train_pytorch_regression_with_early_stopping(
     dataset_path=args.dataset_path,
     target_column=args.target_column,
     save_path=args.save_path
 )
 
+# Output of results
 print("Library: Pytorch")
 print("Task: Regression")
 print(f"Dataset: {args.dataset_path}")

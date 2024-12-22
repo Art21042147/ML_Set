@@ -91,4 +91,3 @@ async def login(session: SessionDep, form_data: OAuth2PasswordRequestForm = Depe
         httponly=True
     )
     return response
-

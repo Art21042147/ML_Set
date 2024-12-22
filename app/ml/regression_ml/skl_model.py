@@ -80,7 +80,7 @@ parser.add_argument("--target-column", required=True, help="Target column for re
 parser.add_argument("--save-path", required=True, help="Path to save results")
 args = parser.parse_args()
 
-# Pass arguments to the function
+# Start training
 mse, r2 = train_regression_model(
     dataset_path=args.dataset_path,
     target_column=args.target_column,

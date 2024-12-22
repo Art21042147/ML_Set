@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status, Cookie
+from fastapi import HTTPException, status, Cookie
 import jwt
 
 from app.core.config import config

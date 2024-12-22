@@ -13,7 +13,7 @@ def train_classification_model(dataset, target_column, save_path):
     """
     Train a classification model using scikit-learn and save results.
 
-    :param dataset: pandas DataFrame containing the dataset.
+    :param dataset: str, path to the dataset CSV file.
     :param target_column: str, the name of the target column for classification.
     :param save_path: str, path to save the model, metrics, and plots.
     """
@@ -69,24 +69,24 @@ def train_classification_model(dataset, target_column, save_path):
     return accuracy, report
 
 
-# Парсинг аргументов командной строки
+# Parsing command line arguments
 parser = argparse.ArgumentParser(description="Run classification model")
 parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
 parser.add_argument("--target-column", required=True, help="Target column for classification")
 parser.add_argument("--save-path", required=True, help="Path to save results")
 args = parser.parse_args()
 
-# Загрузка датасета
+# Loading dataset
 dataset = pd.read_csv(args.dataset_path)
 
-# Запуск обучения
+# Start training
 accuracy, report = train_classification_model(
     dataset=dataset,
     target_column=args.target_column,
     save_path=args.save_path
 )
 
-# Вывод результатов
+# Output of results
 print("Library: Scikit-learn")
 print(f"Dataset Path: {args.dataset_path}")
 print(f"Accuracy: {accuracy}")

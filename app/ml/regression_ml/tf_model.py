@@ -7,6 +7,13 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 
 def train_tensorflow_regression(dataset_path, target_column, save_path):
+    """
+    Train a regression model using tensorflow and save results.
+
+    :param dataset_path: str, path to the dataset CSV file.
+    :param target_column: str, the name of the target column for regression.
+    :param save_path: str, directory to save the model, metrics, and plots.
+    """
     # Load dataset
     dataset = pd.read_csv(dataset_path)
     X = dataset.drop(columns=[target_column])
@@ -44,18 +51,21 @@ def train_tensorflow_regression(dataset_path, target_column, save_path):
     return mse, r2
 
 
+# Command-line argument parsing
 parser = argparse.ArgumentParser(description="Run regression model")
 parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
 parser.add_argument("--target-column", required=True, help="Target column for regression")
 parser.add_argument("--save-path", required=True, help="Path to save results")
 args = parser.parse_args()
 
+# Start training
 mse, r2 = train_tensorflow_regression(
     dataset_path=args.dataset_path,
     target_column=args.target_column,
     save_path=args.save_path
 )
 
+# Output results
 print("Library: Tensorflow")
 print("Task: Regression")
 print(f"Dataset Path: {args.dataset_path}")

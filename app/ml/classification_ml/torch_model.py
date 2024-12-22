@@ -28,6 +28,13 @@ class ClassificationModel(nn.Module):
 
 
 def train_pytorch_classification(dataset_path, target_column, save_path):
+    """
+    Train a classification model using torch and save results.
+
+    :param dataset: str, path to the dataset CSV file.
+    :param target_column: str, the name of the target column for classification.
+    :param save_path: str, path to save the model, metrics, and plots.
+    """
     # Load dataset
     dataset = pd.read_csv(dataset_path)
     X = dataset.drop(columns=[target_column]).values
@@ -87,21 +94,21 @@ def train_pytorch_classification(dataset_path, target_column, save_path):
     return accuracy, report
 
 
-# Парсинг аргументов командной строки
+# Parsing command line arguments
 parser = argparse.ArgumentParser(description="Run classification model")
 parser.add_argument("--dataset-path", required=True, help="Path to the dataset")
 parser.add_argument("--target-column", required=True, help="Target column for classification")
 parser.add_argument("--save-path", required=True, help="Path to save results")
 args = parser.parse_args()
 
-# Запуск обучения
+# Start training
 accuracy, report = train_pytorch_classification(
     dataset_path=args.dataset_path,
     target_column=args.target_column,
     save_path=args.save_path
 )
 
-# Вывод результатов
+# Output of results
 print("Library: Pytorch")
 print(f"Dataset Path: {args.dataset_path}")
 print(f"Accuracy: {accuracy}")
