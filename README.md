@@ -114,6 +114,36 @@ To get started, you'll need to have Python 3.11 installed along with `pip`. If y
 * [TensorFlow](https://www.tensorflow.org/tutorials)
 * [PyTorch](https://pytorch.org/tutorials/beginner/basics/intro.html)
 
+## Screenshots
+
+### Main Page
+The main page of the application provides an interface with a brief description of the purpose of the application, a presentation of the proposed machine learning libraries with links to official resources. To continue working with the application, the user is asked to log in or register.
+
+![Main Page](screenshots/Main_page.png)
+
+---
+
+### Log In
+When you click the `Log In` or `Register` buttons, a pop-up window appears in which the user can enter their registration data.
+
+![Log In](screenshots/Log_in.png)
+
+---
+
+### User Page
+After registration or authorization, the user page opens with a greeting and further instructions on how to use the application. The main part of the page is occupied by a description of the proposed datasets with links to the official resource. On the right are drop-down lists for selecting learning libraries, datasets and tasks.
+The `Start Learning` button starts the learning process according to the selected parameters.
+
+![User Page](screenshots/User_page.png)
+
+---
+
+### Learning Results
+The learning results are dynamically displayed on the user page and stored in the `app/ml/predictions` directory.
+
+![Learning Results](screenshots/Learning_result.png)
+
+
 ## Authors
 
 * **Arthur Ilin** - *Core development and implementation* - [Art21042147](https://github.com/Art21042147)
