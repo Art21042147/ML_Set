@@ -104,6 +104,7 @@ To get started, you'll need to have Python 3.11 installed along with `pip`. If y
 - **`static:`** Contains the ML logo `.svg` and CSS styles.
 - **`templates:`** Contains HTML templates for rendering pages.
 - **`main.py:`** The entry point for running the application.
+- **`tests:`** unit-tests.
 
 ## Built With
 
